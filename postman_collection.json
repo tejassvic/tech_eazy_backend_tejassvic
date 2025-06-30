@@ -1,0 +1,88 @@
+{
+	"info": {
+		"_postman_id": "zero-mile-delivery-system",
+		"name": "Zero Mile Delivery System API",
+		"description": "API collection for Zero Mile Delivery System.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create Parcel",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"tracking_id\": \"TRK123456789\",\n  \"customer_name\": \"John Doe\",\n  \"delivery_address\": \"123 Main St, City, State 12345\",\n  \"contact_number\": \"+1234567890\",\n  \"parcel_size\": \"Medium\",\n  \"parcel_weight\": 2.5,\n  \"status\": \"Pending\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/parcels",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"parcels"
+					]
+				},
+				"description": "Create a new parcel."
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Parcels",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/parcels",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"parcels"
+					]
+				},
+				"description": "Get a list of all parcels."
+			},
+			"response": []
+		},
+		{
+			"name": "Get Parcel by Tracking ID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/parcels/{{tracking_id}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"parcels",
+						"{{tracking_id}}"
+					]
+				},
+				"description": "Get details of a specific parcel by tracking ID."
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8000",
+			"type": "string",
+			"description": "Base URL for the API"
+		},
+		{
+			"key": "tracking_id",
+			"value": "TRK123456789",
+			"type": "string",
+			"description": "Example tracking ID"
+		}
+	]
+} 
