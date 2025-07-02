@@ -1,88 +1,553 @@
 {
 	"info": {
 		"_postman_id": "zero-mile-delivery-system",
-		"name": "Zero Mile Delivery System API",
-		"description": "API collection for Zero Mile Delivery System.",
+		"name": "Zero Mile Delivery System",
+		"description": "Complete API collection for Zero Mile Delivery System with authentication, vendors, delivery orders, and parcels",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
-			"name": "Create Parcel",
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json"
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Register User",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"testuser\",\n  \"email\": \"test@example.com\",\n  \"password\": \"password123\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/register",
+							"host": ["{{base_url}}"],
+							"path": ["register"]
+						}
 					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n  \"tracking_id\": \"TRK123456789\",\n  \"customer_name\": \"John Doe\",\n  \"delivery_address\": \"123 Main St, City, State 12345\",\n  \"contact_number\": \"+1234567890\",\n  \"parcel_size\": \"Medium\",\n  \"parcel_weight\": 2.5,\n  \"status\": \"Pending\"\n}"
 				},
-				"url": {
-					"raw": "{{base_url}}/parcels",
-					"host": [
-						"{{base_url}}"
-					],
-					"path": [
-						"parcels"
-					]
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "username",
+									"value": "testuser"
+								},
+								{
+									"key": "password",
+									"value": "password123"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/token",
+							"host": ["{{base_url}}"],
+							"path": ["token"]
+						}
+					}
 				},
-				"description": "Create a new parcel."
-			},
-			"response": []
+				{
+					"name": "Protected Route",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/protected",
+							"host": ["{{base_url}}"],
+							"path": ["protected"]
+						}
+					}
+				}
+			]
 		},
 		{
-			"name": "Get All Parcels",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{base_url}}/parcels",
-					"host": [
-						"{{base_url}}"
-					],
-					"path": [
-						"parcels"
-					]
+			"name": "Vendors",
+			"item": [
+				{
+					"name": "Create Vendor",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Myntra\",\n  \"subscription_type\": \"PRIME\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/vendors/",
+							"host": ["{{base_url}}"],
+							"path": ["vendors", ""]
+						}
+					}
 				},
-				"description": "Get a list of all parcels."
-			},
-			"response": []
+				{
+					"name": "List Vendors",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/vendors/?skip=0&limit=10",
+							"host": ["{{base_url}}"],
+							"path": ["vendors", ""],
+							"query": [
+								{
+									"key": "skip",
+									"value": "0"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Vendor by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/vendors/{{vendor_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["vendors", "{{vendor_id}}"]
+						}
+					}
+				},
+				{
+					"name": "Get Vendor Delivery Orders",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/vendors/{{vendor_id}}/delivery-orders?skip=0&limit=10",
+							"host": ["{{base_url}}"],
+							"path": ["vendors", "{{vendor_id}}", "delivery-orders"],
+							"query": [
+								{
+									"key": "skip",
+									"value": "0"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Vendor Parcels",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/vendors/{{vendor_id}}/parcels?skip=0&limit=10",
+							"host": ["{{base_url}}"],
+							"path": ["vendors", "{{vendor_id}}", "parcels"],
+							"query": [
+								{
+									"key": "skip",
+									"value": "0"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								}
+							]
+						}
+					}
+				}
+			]
 		},
 		{
-			"name": "Get Parcel by Tracking ID",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{base_url}}/parcels/{{tracking_id}}",
-					"host": [
-						"{{base_url}}"
-					],
-					"path": [
-						"parcels",
-						"{{tracking_id}}"
-					]
+			"name": "Delivery Orders",
+			"item": [
+				{
+					"name": "Create Delivery Order",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "vendor_id",
+									"value": "{{vendor_id}}",
+									"type": "text"
+								},
+								{
+									"key": "delivery_date",
+									"value": "2024-01-15T10:00:00",
+									"type": "text"
+								},
+								{
+									"key": "total_orders",
+									"value": "50",
+									"type": "text"
+								},
+								{
+									"key": "file",
+									"type": "file",
+									"src": []
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/delivery-orders/",
+							"host": ["{{base_url}}"],
+							"path": ["delivery-orders", ""]
+						}
+					}
 				},
-				"description": "Get details of a specific parcel by tracking ID."
-			},
-			"response": []
+				{
+					"name": "Get Today's Delivery Orders",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/delivery-orders/today?skip=0&limit=10",
+							"host": ["{{base_url}}"],
+							"path": ["delivery-orders", "today"],
+							"query": [
+								{
+									"key": "skip",
+									"value": "0"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Filter Delivery Orders by Vendor and Date",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/delivery-orders/filter?vendor_id={{vendor_id}}&date=2024-01-15T00:00:00&skip=0&limit=10",
+							"host": ["{{base_url}}"],
+							"path": ["delivery-orders", "filter"],
+							"query": [
+								{
+									"key": "vendor_id",
+									"value": "{{vendor_id}}"
+								},
+								{
+									"key": "date",
+									"value": "2024-01-15T00:00:00"
+								},
+								{
+									"key": "skip",
+									"value": "0"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Delivery Order Parcels",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/delivery-orders/{{delivery_order_id}}/parcels?skip=0&limit=10",
+							"host": ["{{base_url}}"],
+							"path": ["delivery-orders", "{{delivery_order_id}}", "parcels"],
+							"query": [
+								{
+									"key": "skip",
+									"value": "0"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								}
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Parcels",
+			"item": [
+				{
+					"name": "Create Parcel",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"customer_name\": \"John Doe\",\n  \"delivery_address\": \"123 Main St, City, State 12345\",\n  \"contact_number\": \"+1234567890\",\n  \"parcel_size\": \"Medium\",\n  \"parcel_weight\": 2.5\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/parcels/",
+							"host": ["{{base_url}}"],
+							"path": ["parcels", ""]
+						}
+					}
+				},
+				{
+					"name": "List All Parcels",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/parcels/?skip=0&limit=10",
+							"host": ["{{base_url}}"],
+							"path": ["parcels", ""],
+							"query": [
+								{
+									"key": "skip",
+									"value": "0"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Parcel by Tracking ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/parcels/{{tracking_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["parcels", "{{tracking_id}}"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Files",
+			"item": [
+				{
+					"name": "Download File",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/files/{{file_path}}",
+							"host": ["{{base_url}}"],
+							"path": ["files", "{{file_path}}"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "User Management",
+			"item": [
+				{
+					"name": "Get Current User",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/users/me",
+							"host": ["{{base_url}}"],
+							"path": ["users", "me"]
+						}
+					}
+				},
+				{
+					"name": "List Users (Admin Only)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/users/?skip=0&limit=10",
+							"host": ["{{base_url}}"],
+							"path": ["users", ""],
+							"query": [
+								{
+									"key": "skip",
+									"value": "0"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Create User (Admin Only)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"newvendor\",\n  \"email\": \"vendor@example.com\",\n  \"password\": \"password123\",\n  \"role\": \"VENDOR\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/users/",
+							"host": ["{{base_url}}"],
+							"path": ["users", ""]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Dashboards",
+			"item": [
+				{
+					"name": "Admin Dashboard",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/admin/dashboard",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "dashboard"]
+						}
+					}
+				},
+				{
+					"name": "Vendor Dashboard",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/vendor/dashboard",
+							"host": ["{{base_url}}"],
+							"path": ["vendor", "dashboard"]
+						}
+					}
+				},
+				{
+					"name": "Delivery Agent Dashboard",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/delivery-agent/dashboard",
+							"host": ["{{base_url}}"],
+							"path": ["delivery-agent", "dashboard"]
+						}
+					}
+				},
+				{
+					"name": "Customer Dashboard",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/customer/dashboard",
+							"host": ["{{base_url}}"],
+							"path": ["customer", "dashboard"]
+						}
+					}
+				}
+			]
 		}
 	],
 	"variable": [
 		{
 			"key": "base_url",
-			"value": "http://localhost:8000",
-			"type": "string",
-			"description": "Base URL for the API"
+			"value": "http://localhost:8000"
+		},
+		{
+			"key": "access_token",
+			"value": ""
+		},
+		{
+			"key": "vendor_id",
+			"value": ""
 		},
 		{
 			"key": "tracking_id",
-			"value": "TRK123456789",
-			"type": "string",
-			"description": "Example tracking ID"
+			"value": ""
+		},
+		{
+			"key": "file_path",
+			"value": ""
+		},
+		{
+			"key": "delivery_order_id",
+			"value": ""
 		}
 	]
 } 
